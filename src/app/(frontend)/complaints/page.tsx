@@ -1,0 +1,44 @@
+import React from 'react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Complaints Policy | MWA autos',
+  description: 'View the complaints handling procedure and policy for MWA autos.',
+}
+
+export default function ComplaintsPage() {
+  return (
+    <main className="min-h-screen bg-[#111111] text-white pt-32 pb-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-5xl tracking-[0.2em] font-light uppercase mb-12 border-b border-zinc-800 pb-8">
+          Complaints Policy
+        </h1>
+        
+        <div className="space-y-8 text-zinc-300 font-light leading-relaxed text-sm md:text-base">
+          <p>
+            At MWA autos, we strive to ensure that all of our customers receive the highest standard of service. If you are unhappy with the service you have received or the vehicle you have purchased, we want to hear about it so that we can put things right. We take all complaints very seriously and view them as an opportunity to improve our business.
+          </p>
+          
+          <h2 className="text-xl tracking-widest uppercase font-semibold text-white mt-12 mb-6">How to make a complaint</h2>
+          <p>
+            If you have a complaint, please do not hesitate to reach out to us. You can contact us in the following ways:
+          </p>
+          <ul className="list-disc list-inside space-y-2 mt-4 ml-2">
+            <li>By telephone: 01157844104</li>
+            <li>In writing: 3 Elson St, New Basford, Nottingham, NG7 7HQ</li>
+          </ul>
+
+          <h2 className="text-xl tracking-widest uppercase font-semibold text-white mt-12 mb-6">What happens next?</h2>
+          <p>
+            We will aim to resolve your complaint as quickly and efficiently as possible. Where possible, we will try to resolve your complaint within 3 working days of receiving it. If we need more time to investigate your complaint, we will acknowledge receipt of your complaint in writing and keep you updated on the progress of our investigation.
+          </p>
+
+          <h2 className="text-xl tracking-widest uppercase font-semibold text-white mt-12 mb-6">Our commitment</h2>
+          <p>
+            We will write to you with our final response within 8 weeks of receiving your complaint. If you remain dissatisfied with our response, or we have not provided a final response within 8 weeks, you may be entitled to refer the matter to the Financial Ombudsman Service.
+          </p>
+        </div>
+      </div>
+    </main>
+  )
+}

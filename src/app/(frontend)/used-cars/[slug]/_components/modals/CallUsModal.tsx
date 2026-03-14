@@ -1,0 +1,135 @@
+import React, { useState } from 'react'
+import { Phone } from 'lucide-react'
+import { buildBaseWebhookPayload, submitWebhookForm, withInterestedVehicle } from './formSubmission'
+
+interface CallUsModalProps {
+  phoneNumber: string
+  vehicleMake: string
+  vehicleModel: string
+  vehicleReg: string
+  vehiclePrice: number | null
+  stockId?: string
+  onClose: () => void
+}
+
+export default function CallUsModal({
+  phoneNumber,
+  vehicleMake,
+  vehicleModel,
+  vehicleReg,
+  vehiclePrice,
+  stockId,
+  onClose,
+}: CallUsModalProps) {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
+  const handleCall = async () => {
+    setSubmitError(null)
+    setIsSubmitting(true)
+
+    try {
+      const basePayload = buildBaseWebhookPayload({
+        enquiryType: 'general-contact',
+        firstName,
+        lastName,
+        email,
+        phoneNumber: phone,
+      })
+
+      const payload = withInterestedVehicle(basePayload, {
+        stockId,
+        make: vehicleMake,
+        model: vehicleModel,
+        registration: vehicleReg,
+        price: vehiclePrice,
+      })
+
+      payload.notes = 'Customer requested a phone call from vehicle detail page.'
+
+      await submitWebhookForm(payload)
+      window.location.href = `tel:${phoneNumber}`
+      onClose()
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit call request')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
+      <div className="w-full max-w-sm bg-[#161616] border border-white/10 p-6 shadow-2xl text-center">
+        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Phone className="w-5 h-5 text-white" />
+        </div>
+        
+        <h2 className="text-xl font-light tracking-widest uppercase mb-2">Call Dealership</h2>
+        <p className="text-sm text-zinc-400 mb-8">
+          Speak with our team to get more information about this vehicle.
+        </p>
+
+        <div className="space-y-3 text-left mb-6">
+          <input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            type="text"
+            required
+            placeholder="First Name"
+            className="w-full bg-zinc-900 border border-white/10 p-3 text-sm text-white focus:outline-none focus:border-white/30"
+          />
+          <input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            type="text"
+            required
+            placeholder="Last Name"
+            className="w-full bg-zinc-900 border border-white/10 p-3 text-sm text-white focus:outline-none focus:border-white/30"
+          />
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            required
+            placeholder="Email"
+            className="w-full bg-zinc-900 border border-white/10 p-3 text-sm text-white focus:outline-none focus:border-white/30"
+          />
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            required
+            placeholder="Phone"
+            className="w-full bg-zinc-900 border border-white/10 p-3 text-sm text-white focus:outline-none focus:border-white/30"
+          />
+        </div>
+
+        <div className="text-2xl font-medium tracking-widest mb-8">
+          {phoneNumber}
+        </div>
+
+        {submitError && <p className="text-sm text-red-400 mb-4">{submitError}</p>}
+
+        <div className="flex gap-4">
+          <button 
+            onClick={onClose}
+            className="flex-1 border border-white/30 text-white px-4 py-4 text-xs font-semibold tracking-widest uppercase hover:bg-white/10 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            disabled={isSubmitting || !firstName || !lastName || !email || !phone}
+            onClick={handleCall}
+            className="flex-1 bg-white text-black px-4 py-4 text-xs font-semibold tracking-widest uppercase hover:bg-zinc-200 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Submitting...' : 'Call Now'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

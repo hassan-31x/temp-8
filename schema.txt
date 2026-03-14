@@ -1,0 +1,82 @@
+type Data = {
+  advertiserId: string
+  enquiryType: 'part-exchange' | 'find-your-next-car' | 'book-appointment' | 'request-finance'
+
+  personal: {
+    title: string | null // enquiryType === 'part-exchange'
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber: string
+
+    //? request-finance
+    gender: string | null // enquiryType === 'request-finance'
+    countryOfOrigin: string | null // enquiryType === 'request-finance'
+    dateOfBirth: string | null // enquiryType === 'request-finance'
+    maritalStatus: string | null // enquiryType === 'request-finance'
+    dependents: number | null // enquiryType === 'request-finance'
+    address: string | null // enquiryType === 'request-finance'
+  }
+
+  vehicle: {
+    stockId: string | null // for testDrive, isTestDrive === true. for findYourNextCar, enquiryType === 'stock-vehicle'
+    make: string | null // for testDrive, isTestDrive === true. for findYourNextCar, enquiryType === 'stock-vehicle'
+    model: string | null // for testDrive, isTestDrive === true. for findYourNextCar, enquiryType === 'stock-vehicle'
+    registration: string | null // for testDrive, isTestDrive === true.
+
+    year: string | null // enquiryType === 'request-finance'
+    mileage: string | null // enquiryType === 'part-exchange'
+    recentValuations: string | null // enquiryType === 'part-exchange'
+
+    //? request-finance
+    price: number | null // enquiryType === 'request-finance'
+    initialDeposit: number | null // enquiryType === 'request-finance'
+    loanTerm: number | null // in months // enquiryType === 'request-finance'
+    apr: number | null // enquiryType === 'request-finance'
+    amountToFinance: number | null // enquiryType === 'request-finance'
+    monthlyPayment: number | null // enquiryType === 'request-finance'
+  } | null
+
+  findYourNextCar: {
+    enquiryType: 'stock-vehicle' | 'help-finding-car' | 'general-enquiry'
+    vehiclePreferences: string | null // only when enquiryType is 'help-finding-car'
+  } | null // enquiryType === 'find-your-next-car'
+
+  testDrive: {
+    isTestDrive: boolean
+    testDriveDate: string | null // only when isTestDrive is true
+    testDriveTime: string | null // only when isTestDrive is true
+    additionalRequirements: string | null
+  } | null // enquiryType === 'book-appointment'
+
+  //? request-finance
+  employment: {
+    status: 
+      | 'Employed Full-Time'
+      | 'Employed Part-Time'
+      | 'Self-Employed'
+      | 'Unemployed'
+      | 'Retired'
+      | 'Student'
+      | 'Annuitant'
+      | 'Pensioner'
+      | 'Other'
+    annualIncome: number
+    employerName: string
+    timeInEmployment: string
+    grossAnnualIncome: number
+  } | null // enquiryType === 'request-finance'
+  finance: {
+    monthlyExpenses: number
+    existenceCreditCommitments: number
+  } | null // enquiryType === 'request-finance'
+  bank: {
+    accountHolderName: string
+    bankName: string
+    sortCode: string
+    accountNumber: string
+    timeWithBank: string
+  } | null // enquiryType === 'request-finance'
+
+  notes: string | null
+}
