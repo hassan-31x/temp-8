@@ -165,7 +165,7 @@ export default function VehicleClient({ vehicle }: VehicleClientProps) {
           </section>
 
           <aside className="border border-white/12 bg-black p-5">
-            <p className="border-b border-red-600 pb-3 text-xs uppercase tracking-[0.14em] text-zinc-400">MYDV AUTOS</p>
+            <p className="border-b border-red-600 pb-3 text-xs uppercase tracking-[0.14em] text-zinc-400">MWA AUTOS</p>
             <h2 className="mt-3 text-4xl font-extrabold uppercase tracking-[0.05em]">{make} {model}</h2>
 
             <div className="mt-4 grid grid-cols-2 gap-3 border-b border-white/10 pb-4">
