@@ -23,7 +23,7 @@ const getVehiclesMakesSitemap = unstable_cache(
       let hasMoreData = true
 
       while (hasMoreData) {
-        const myDealershipUrl = `https://mydealershipview.com/api/website/stock?dealerEmail=info@mwaautosltd.co.uk&pageSize=100&page=${currentPage}`
+        const myDealershipUrl = `${process.env.DMS_URL}?dealerEmail=${process.env.DEALER_EMAIL}&pageSize=100&page=${currentPage}`
 
         const response = await fetch(myDealershipUrl, {
           method: 'GET',

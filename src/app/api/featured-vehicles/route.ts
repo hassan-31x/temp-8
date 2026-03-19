@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   // Try MyDealershipView API first
   try {
     console.log('Fetching featured vehicles from MyDealershipView API...')
-    const myDealershipUrl = `https://mydealershipview.com/api/website/stock?dealerEmail=info@mwaautosltd.co.uk&pageSize=15&page=1`
+    const myDealershipUrl = `${process.env.DMS_URL}?dealerEmail=${process.env.DEALER_EMAIL}&pageSize=15&page=1`
     
     const response = await fetch(myDealershipUrl, {
       method: 'GET',

@@ -344,7 +344,7 @@ export async function fetchAutoTraderListings(params: {
   // Try MyDealershipView API first
   try {
     console.log('Fetching vehicles from MyDealershipView API...')
-    const myDealershipUrl = `https://mydealershipview.com/api/website/stock?dealerEmail=info@mwaautosltd.co.uk&pageSize=${pageSize}&page=${page}`
+    const myDealershipUrl = `${process.env.DMS_URL}?dealerEmail=${process.env.DEALER_EMAIL}&pageSize=${pageSize}&page=${page}`
     
     // Add filters to the URL if provided
     const urlParams = new URLSearchParams()

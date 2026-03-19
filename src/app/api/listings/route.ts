@@ -28,7 +28,7 @@ async function fetchAllListings(): Promise<AutoTraderVehicle[]> {
     let hasMoreData = true
 
     while (hasMoreData) {
-      const myDealershipUrl = `https://mydealershipview.com/api/website/stock?dealerEmail=info@mwaautosltd.co.uk&pageSize=${pageSize}&page=${currentPage}`
+      const myDealershipUrl = `${process.env.DMS_URL}?dealerEmail=${process.env.DEALER_EMAIL}&pageSize=${pageSize}&page=${currentPage}`
       
       const response = await fetch(myDealershipUrl, {
         method: 'GET',
