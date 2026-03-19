@@ -28,11 +28,11 @@ const queryListingsPage = cache(async (): Promise<Page | null> => {
 })
 
 export const metadata: Metadata = {
-  title: 'Used Cars for Sale Nottingham | Quality Pre-Owned Vehicles | MWA Autos',
+  title: 'Used Cars for Sale Nottingham | Quality Pre-Owned Vehicles | MYDV Autos',
   description: 'Browse our extensive collection of quality used cars in Nottingham. Premium vehicles from Audi, BMW, Mercedes, Ford & more. Finance available, part exchange welcome.',
-  keywords: 'used cars for sale Nottingham, second hand cars Nottingham, pre-owned vehicles, car showroom Nottingham, car finance Nottingham, MWA Autos',
+  keywords: 'used cars for sale Nottingham, second hand cars Nottingham, pre-owned vehicles, car showroom Nottingham, car finance Nottingham, MYDV Autos',
   openGraph: {
-    title: 'Used Cars for Sale Nottingham | MWA Autos',
+    title: 'Used Cars for Sale Nottingham | MYDV Autos',
     description: 'Discover premium quality used cars in our Nottingham showroom. Expert valuations, finance options, and exceptional customer service.',
     type: 'website',
     locale: 'en_GB',

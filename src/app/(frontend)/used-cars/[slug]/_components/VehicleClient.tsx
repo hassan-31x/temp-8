@@ -6,19 +6,9 @@ import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
-  Route,
-  Fuel,
-  GitBranch,
-  Palette,
-  Settings,
-  Calendar,
-  Gauge,
-  Flag,
-  Users,
-  Activity,
+  Download,
 } from 'lucide-react'
 import { AutoTraderVehicle } from '@/utilities/autotrader'
-import { Services } from '@/components/home/Services'
 
 import {
   ReserveModal,
@@ -48,10 +38,16 @@ export default function VehicleClient({ vehicle }: VehicleClientProps) {
   
   const price = vehicle.adverts?.forecourtPrice?.amountGBP || vehicle.adverts?.retailAdverts?.suppliedPrice?.amountGBP
   const wasPrice = vehicle.adverts?.soldPrice?.amountGBP || null
-  
-  const images = vehicle.media?.images || []
+
+  const images = (vehicle.media?.images || []).filter((image) => {
+    const href = image?.href?.toLowerCase() || ''
+    return href && !href.includes('youtube.com') && !href.includes('youtu.be') && !href.includes('vimeo.com')
+  })
   const hasImages = images.length > 0
   const activeImage = hasImages ? images[activeImageIndex].href : '/placeholder.svg'
+  const secondaryImage = hasImages && images.length > 1
+    ? images[(activeImageIndex + 1) % images.length].href
+    : null
 
   const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % images.length)
   const prevImage = () => setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
@@ -70,216 +66,148 @@ export default function VehicleClient({ vehicle }: VehicleClientProps) {
     }).format(monthlyPayment)
   }
 
-  const specs = [
-    { label: 'MAKE', value: make, icon: null },
-    { label: 'MODEL', value: model, icon: null },
-    { label: 'MILEAGE', value: vehicle.vehicle.odometerReadingMiles ? `${new Intl.NumberFormat('en-GB').format(vehicle.vehicle.odometerReadingMiles)} MILES` : 'N/A', icon: Route },
-    { label: 'FUEL TYPE', value: vehicle.vehicle.fuelType || vehicle.vehicle.standard?.fuelType || 'N/A', icon: Fuel },
-    { label: 'TRANSMISSION', value: vehicle.vehicle.transmissionType || vehicle.vehicle.standard?.transmissionType || 'N/A', icon: GitBranch },
-    { label: 'BASIC COLOUR', value: vehicle.vehicle.colour || vehicle.vehicle.standard?.colour || 'N/A', icon: Palette },
-    { label: 'ENGINE SIZE', value: vehicle.vehicle.badgeEngineSizeLitres ? `${vehicle.vehicle.badgeEngineSizeLitres.toFixed(1)}L` : 'N/A', icon: Settings },
-    { label: 'YEAR', value: vehicle.vehicle.yearOfManufacture ? vehicle.vehicle.yearOfManufacture.toString() : 'N/A', icon: Calendar },
-    { label: 'MAXIMUM SPEED', value: vehicle.vehicle.topSpeedMPH ? `${vehicle.vehicle.topSpeedMPH} MPH` : 'N/A', icon: Gauge },
-    { label: 'BHP', value: vehicle.vehicle.enginePowerBHP ? `${vehicle.vehicle.enginePowerBHP} BHP` : 'N/A', icon: Flag },
-    { label: 'SEATS', value: vehicle.vehicle.seats ? vehicle.vehicle.seats.toString() : 'N/A', icon: Users },
-    { label: 'MPG', value: vehicle.vehicle.fuelEconomyWLTPCombinedMPG || vehicle.vehicle.fuelEconomyNEDCCombinedMPG || 'N/A', icon: Activity },
+  const specRows = [
+    { label: 'Reg', value: vehicle.vehicle.registration || 'N/A' },
+    { label: 'Year', value: vehicle.vehicle.yearOfManufacture ? vehicle.vehicle.yearOfManufacture.toString() : 'N/A' },
+    { label: 'Transmission', value: vehicle.vehicle.transmissionType || vehicle.vehicle.standard?.transmissionType || 'N/A' },
+    { label: 'Body Type', value: vehicle.vehicle.bodyType || vehicle.vehicle.standard?.bodyType || 'N/A' },
+    { label: 'Fuel Type', value: vehicle.vehicle.fuelType || vehicle.vehicle.standard?.fuelType || 'N/A' },
+    { label: 'Engine Size', value: vehicle.vehicle.badgeEngineSizeLitres ? `${vehicle.vehicle.badgeEngineSizeLitres.toFixed(1)}L` : 'N/A' },
+    { label: 'Doors', value: vehicle.vehicle.doors ? vehicle.vehicle.doors.toString() : 'N/A' },
+    { label: 'Mileage', value: vehicle.vehicle.odometerReadingMiles ? `${new Intl.NumberFormat('en-GB').format(vehicle.vehicle.odometerReadingMiles)} mi` : 'N/A' },
   ]
 
   return (
-    <main className="min-h-screen bg-[#111111] text-white pt-24 pb-0">
-      <div className="max-w-350 mx-auto px-6">
-        
-        {/* Back Link */}
-        <Link href="/used-cars" className="inline-flex items-center text-xs text-zinc-400 hover:text-white uppercase tracking-widest mb-10 transition-colors!">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Results
-        </Link>
-        
-        {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-8 gap-6">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl md:text-5xl font-light tracking-widest uppercase mb-1">
-              {make} {model}
-            </h1>
-            <h2 className="text-sm md:text-base text-zinc-400 uppercase tracking-widest font-light leading-relaxed">
-              {derivative}
-            </h2>
-          </div>
-          
-          <div className="flex flex-col lg:items-end shrink-0">
-            <div className="flex items-baseline gap-3 mb-1">
-              <span className="text-3xl md:text-5xl font-light">
-                {price ? `£${new Intl.NumberFormat('en-GB').format(price)}` : 'POA'}
-              </span>
-              {wasPrice && (
-                <span className="text-sm text-zinc-400 line-through">
-                  Was £{new Intl.NumberFormat('en-GB').format(wasPrice)}
-                </span>
-              )}
-            </div>
-            <div className="text-sm tracking-widest text-zinc-400 text-right w-full">
-              {price ? `£${calculateMonthlyPayment(price)} per month` : ''}
-            </div>
-          </div>
+    <main className="min-h-screen bg-black text-white pt-22 pb-20">
+      <div className="mx-auto w-full max-w-[1600px] px-3 md:px-6">
+        <div className="mb-3 grid grid-cols-1 gap-3 border border-white/15 p-4 lg:grid-cols-[1fr_auto]">
+          <Link href="/used-cars" className="inline-flex items-center gap-2 border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-200 hover:bg-white/10">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Results
+          </Link>
+          <button className="inline-flex items-center justify-center gap-2 border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-200 hover:bg-white/10">
+            <Download className="h-4 w-4" />
+            Download/Print
+          </button>
         </div>
 
-        {/* Main Image & Specs */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 mb-4">
-          
-          {/* Main Image */}
-          <div className="relative aspect-16/10 lg:aspect-auto h-100 md:h-125 lg:h-150 bg-zinc-900 group">
+        <div className="grid grid-cols-1 overflow-hidden border border-white/15 lg:grid-cols-2">
+          <div className="relative h-[320px] bg-zinc-900 sm:h-[420px] lg:h-[560px] xl:h-[620px]">
             {hasImages ? (
-              <img 
-                src={activeImage} 
-                alt={`${make} ${model}`}
-                className="w-full h-full object-cover"
-              />
+              <img src={activeImage} alt={`${make} ${model}`} className="h-full w-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-500">
-                NO IMAGE AVAILABLE
+              <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-[0.12em] text-zinc-500">
+                No Image Available
               </div>
             )}
-            
-            {hasImages && (
+
+            {hasImages && images.length > 1 && (
               <>
-                <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 hover:bg-zinc-200 transition-colors!">
-                  <ChevronLeft className="w-6 h-6" />
+                <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/55 p-2 text-white hover:bg-black/80">
+                  <ChevronLeft className="h-6 w-6" />
                 </button>
-                <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 hover:bg-zinc-200 transition-colors!">
-                  <ChevronRight className="w-6 h-6" />
+                <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/55 p-2 text-white hover:bg-black/80">
+                  <ChevronRight className="h-6 w-6" />
                 </button>
               </>
             )}
 
+            <div className="absolute bottom-3 left-3 bg-black/70 px-2 py-1 text-xs font-semibold text-zinc-200">
+              {images.length > 0 ? `${activeImageIndex + 1} / ${images.length}` : '0 / 0'}
+            </div>
           </div>
 
-          {/* Specs List */}
-          <div className="flex flex-col text-xs tracking-widest bg-[#161616] p-6 lg:p-0 lg:bg-transparent">
-            {specs.map((spec, index) => {
-              const Icon = spec.icon
-              return (
-                <div key={index} className="flex justify-between items-center py-4 border-b border-white/10 last:border-0 uppercase lg:py-3 xl:py-4">
-                  <div className="flex items-center gap-3 text-zinc-400">
-                    {Icon ? <Icon className="w-4 h-4" /> : <div className="w-4 h-4" />}
-                    {spec.label}
-                  </div>
-                  <div className="text-right text-white max-w-50 font-medium wrap-break-word ml-4 truncate">
-                    {spec.value}
-                  </div>
-                </div>
-              )
-            })}
+          <div className="h-[320px] border-t border-white/10 bg-zinc-950 sm:h-[420px] lg:h-[560px] lg:border-l lg:border-t-0 xl:h-[620px]">
+            {secondaryImage ? (
+              <img src={secondaryImage} alt={`${make} ${model} secondary view`} className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-[0.12em] text-zinc-500">
+                More Photos Coming Soon
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Horizontal Thumbnail Strip */}
         {hasImages && (
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-10 snap-x hide-scrollbar">
+          <div className="mb-4 flex gap-2 overflow-x-auto border-x border-b border-white/15 bg-black px-2 py-2 hide-scrollbar">
             {images.map((img, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveImageIndex(idx)}
-                className={`relative h-20 md:h-24 aspect-4/3 shrink-0 snap-start transition-all! ${
-                  idx === activeImageIndex ? 'ring-2 ring-white opacity-100' : 'opacity-50 hover:opacity-100'
+                className={`relative h-20 w-30 shrink-0 overflow-hidden border ${
+                  idx === activeImageIndex ? 'border-red-500' : 'border-white/20'
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img.href} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                <img src={img.href} alt={`Thumbnail ${idx + 1}`} className="h-full w-full object-cover" />
               </button>
             ))}
           </div>
         )}
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col items-center gap-4 mb-20 max-w-5xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full justify-center">
-            <button 
-              onClick={() => setShowReserve(true)}
-              className="bg-white text-black px-4 py-4 text-xs font-semibold tracking-widest lg:tracking-[0.2em] uppercase hover:bg-zinc-200 transition-colors! col-span-1 md:col-span-1"
-            >
-              RESERVE NOW
-            </button>
-            <button 
-              onClick={() => setShowEmail(true)}
-              className="border border-white/30 text-white px-2 py-4 text-[10px] lg:text-xs tracking-widest lg:tracking-[0.2em] uppercase hover:bg-white/10 transition-colors! col-span-1 md:col-span-1"
-            >
-              ENQUIRE ONLINE
-            </button>
-            <button 
-              onClick={() => setShowCallUs(true)}
-              className="border border-white/30 text-white px-2 py-4 text-[10px] lg:text-xs tracking-widest lg:tracking-[0.2em] uppercase hover:bg-white/10 transition-colors! col-span-1 md:col-span-1"
-            >
-              CALL US
-            </button>
-            </div>            
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.3fr_0.7fr]">
+          <section className="border border-white/12 bg-black p-6 md:p-8">
+            <p className="mb-3 text-xs uppercase tracking-[0.18em] text-zinc-400">
+              More About {make} {model}
+            </p>
+            <h1 className="mb-2 text-3xl font-semibold uppercase tracking-[0.06em] text-white md:text-4xl">
+              {make} {model}
+            </h1>
+            {derivative && (
+              <p className="mb-6 text-sm uppercase tracking-[0.15em] text-zinc-400">{derivative}</p>
+            )}
+            {vehicle.adverts?.retailAdverts?.description ? (
+              <div className="text-sm leading-7 text-zinc-300">
+                {vehicle.adverts.retailAdverts.description}
+              </div>
+            ) : (
+              <p className="text-sm text-zinc-400">Description coming soon.</p>
+            )}
+          </section>
 
-            <div className='grid grid-cols-2 gap-4 w-full justify-center'>
-            <button 
-              onClick={() => setShowFinance(true)}
-              className="border border-white/30 text-white px-2 py-4 text-[10px] lg:text-xs tracking-widest lg:tracking-[0.2em] uppercase hover:bg-white/10 transition-colors! col-span-1 md:col-span-1"
-            >
-              FINANCE
-            </button>
-             <button 
-               onClick={() => setShowPartExchange(true)}
-               className="border border-white/30 text-white px-10 py-4 text-xs tracking-[0.2em] uppercase hover:bg-white/10 transition-colors! w-full md:w-auto"
-             >
-              PART EXCHANGE
-            </button>
-          </div>
-        </div>
+          <aside className="border border-white/12 bg-black p-5">
+            <p className="border-b border-red-600 pb-3 text-xs uppercase tracking-[0.14em] text-zinc-400">MYDV AUTOS</p>
+            <h2 className="mt-3 text-4xl font-extrabold uppercase tracking-[0.05em]">{make} {model}</h2>
 
-        {/* Horizontal Image Gallery (2 Rows) */}
-        {images.length > 1 && (
-          <div className="mb-20">
-            <div className="grid grid-rows-2 grid-flow-col gap-2 md:gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
-              {images.slice(1).map((img, idx) => (
-                <div key={idx} className="relative w-56 md:w-72 lg:w-80 aspect-4/3 snap-center bg-zinc-900 overflow-hidden group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.href} className="w-full h-full object-cover transition-transform! duration-700! group-hover:scale-105" alt={`Detail ${idx + 1}`} />
+            <div className="mt-4 grid grid-cols-2 gap-3 border-b border-white/10 pb-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.12em] text-zinc-400">Our Price</p>
+                <p className="text-4xl font-bold text-white">{price ? `£${new Intl.NumberFormat('en-GB').format(price)}` : 'POA'}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.12em] text-zinc-400">Monthly Price</p>
+                <p className="text-3xl font-bold text-red-500">{price ? calculateMonthlyPayment(price) : 'N/A'}</p>
+                {wasPrice && <p className="mt-1 text-xs text-zinc-400 line-through">Was £{new Intl.NumberFormat('en-GB').format(wasPrice)}</p>}
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2">
+              {specRows.map((item) => (
+                <div key={item.label} className="grid grid-cols-2 border border-white/10 text-sm">
+                  <span className="px-3 py-2 text-zinc-400">{item.label}</span>
+                  <span className="px-3 py-2 text-right font-semibold text-white">{item.value}</span>
                 </div>
               ))}
             </div>
-          </div>
-        )}
 
-        {/* Description Section */}
-        {vehicle.adverts?.retailAdverts?.description && (
-          <div className="border border-white/10 p-8 md:p-12 mb-20 bg-[#161616]">
-            <h3 className="text-xl md:text-2xl uppercase tracking-widest font-light mb-6">DESCRIPTION</h3>
-            <div className="text-sm text-zinc-400 font-light leading-relaxed whitespace-pre-wrap">
-              {vehicle.adverts.retailAdverts.description}
+            <div className="mt-4 grid gap-2">
+              <button onClick={() => setShowEmail(true)} className="w-full bg-white py-3 text-sm font-semibold uppercase tracking-[0.12em] text-black hover:bg-zinc-200">
+                Enquire Now
+              </button>
+              <button onClick={() => setShowFinance(true)} className="w-full bg-red-600 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white hover:bg-red-700">
+                Apply For Finance
+              </button>
+              <button onClick={() => setShowCallUs(true)} className="w-full bg-emerald-600 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white hover:bg-emerald-700">
+                Chat
+              </button>
+              <button onClick={() => setShowReserve(true)} className="w-full bg-red-600 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white hover:bg-red-700">
+                Reserve
+              </button>
+              <button onClick={() => setShowPartExchange(true)} className="w-full border border-white/25 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white hover:bg-white/10">
+                Part Exchange
+              </button>
             </div>
-          </div>
-        )}
-
-        {/* Visit Our Showroom / Map Section */}
-        <div className="text-center mb-0 border-t border-white/10 pt-20">
-          <h3 className="text-xl md:text-2xl uppercase tracking-widest font-light mb-4">VISIT OUR SHOWROOM</h3>
-          <p className="text-sm text-zinc-400 font-light mb-8 max-w-2xl mx-auto px-4">
-            Book a test drive on your next car, today. Based in Cleckheaton, West Yorkshire, just 2 minutes from Junction 26 of the M62.
-          </p>
-          <button className="bg-white text-black px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-zinc-200 transition-colors! mb-12 inline-flex items-center gap-2">
-            GET DIRECTIONS <ChevronRight className="w-4 h-4 ml-1" />
-          </button>
-          
-          <div className="w-full h-75 md:h-125 relative overflow-hidden group">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2358.5422619730596!2d-1.7226456241031737!3d53.76101297232204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487be75529f7cfeb%3A0xc487a3cbdddb0b59!2sRiviera%20Automotive%20Ltd!5e0!3m2!1sen!2suk!4v1710087754321!5m2!1sen!2suk"
-              className="absolute inset-0 w-full h-125"
-              style={{ border: 0, filter: 'grayscale(100%) invert(92%) contrast(83%)' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-            <div className="absolute inset-0 bg-transparent pointer-events-none group-hover:bg-white/5 transition-colors!"></div>
-          </div>
+          </aside>
         </div>
-      </div>
-      
-      {/* Our Services Section */}
-      <div className="mt-0">
-        <Services />
       </div>
 
       {/* Modals */}

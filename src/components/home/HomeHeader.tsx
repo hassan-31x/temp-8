@@ -6,8 +6,7 @@ import Link from "next/link"
 
 const navItems = [
   { label: "HOME", href: "/" },
-  { label: "SHOWROOM", href: "/showroom" },
-  { label: "SELL YOUR CAR", href: "/sell" },
+  { label: "SHOWROOM", href: "/used-cars" },
   { label: "SERVICES", href: "/services" },
   { label: "WARRANTY", href: "/warranty" },
   { label: "PART EXCHANGE", href: "/part-exchange" },
@@ -30,10 +29,6 @@ export default function HomeHeader() {
           >
             <Menu className="h-6 w-6 text-red-500" />
             <span className="hidden sm:inline font-semibold tracking-wider">MENU</span>
-          </button>
-          <button className="flex items-center gap-2 hover:text-red-500 transition-colors">
-            <Search className="h-5 w-5 text-red-500" />
-            <span className="hidden sm:inline font-semibold tracking-wider">SEARCH</span>
           </button>
         </div>
 

@@ -152,7 +152,7 @@ export const ContactInfo: GlobalConfig = {
           label: 'Email Address',
           required: true,
           admin: {
-            placeholder: 'e.g., info@mwaautosltd.co.uk',
+            placeholder: 'e.g., info@mydv.co.uk',
           },
         },
         {
@@ -168,7 +168,7 @@ export const ContactInfo: GlobalConfig = {
       defaultValue: [
         {
           label: 'General Enquiries',
-          email: 'info@mwaautosltd.co.uk',
+          email: 'info@mydv.co.uk',
           isPrimary: true,
         },
       ],

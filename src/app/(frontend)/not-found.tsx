@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Page Not Found | My Dealership View',
-  description: 'The page you\'re looking for could not be found. Return to My Dealership View to explore our luxury vehicle collection.',
+  title: 'Page Not Found | MWA Autos',
+  description: 'The page you\'re looking for could not be found. Return to explore our quality used cars.',
   robots: {
     index: false,
     follow: false,
@@ -12,30 +12,31 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center">
-        <div className="mb-8">
-          <h1 className="text-9xl font-bold text-slate-900 opacity-20">404</h1>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="text-center px-4">
+        <div className="mb-6 relative">
+          <h1 className="text-8xl md:text-9xl font-black tracking-[0.2em] text-white/5 mx-auto">404</h1>
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+        <h2 className="text-2xl md:text-4xl font-black tracking-widest uppercase mb-4 flex items-center justify-center gap-3">
+          <div className="w-5 h-5 bg-red-600 rotate-45 inline-block shrink-0" />
           Page Not Found
         </h2>
-        <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
+        <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-md mx-auto">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
-          Let&apos;s get you back to exploring our luxury vehicle collection.
+          Let&apos;s get you back to exploring our collection.
         </p>
-        <div className="space-x-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/"
-            className="inline-block bg-[#44903C] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#8F8F8F] transition-colors"
+            className="inline-flex items-center justify-center px-8 py-3 bg-red-600 text-white text-sm font-bold tracking-widest uppercase hover:bg-red-700 transition-colors"
           >
             Go Home
           </Link>
           <Link
-            href="/vehicles"
-            className="inline-block border border-slate-300 text-slate-700 px-6 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+            href="/used-cars"
+            className="inline-flex items-center justify-center px-8 py-3 bg-transparent border border-white/20 text-white text-sm font-bold tracking-widest uppercase hover:bg-white/10 transition-colors"
           >
-            Browse Vehicles
+            Browse Showroom
           </Link>
         </div>
       </div>

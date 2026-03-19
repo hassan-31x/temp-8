@@ -2,8 +2,8 @@ import React from 'react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Complaints Policy | MWA autos',
-  description: 'View the complaints handling procedure and policy for MWA autos.',
+  title: 'Complaints Policy | MYDV autos',
+  description: 'View the complaints handling procedure and policy for MYDV autos.',
 }
 
 export default function ComplaintsPage() {
@@ -16,7 +16,7 @@ export default function ComplaintsPage() {
         
         <div className="space-y-8 text-zinc-300 font-light leading-relaxed text-sm md:text-base">
           <p>
-            At MWA autos, we strive to ensure that all of our customers receive the highest standard of service. If you are unhappy with the service you have received or the vehicle you have purchased, we want to hear about it so that we can put things right. We take all complaints very seriously and view them as an opportunity to improve our business.
+            At MYDV autos, we strive to ensure that all of our customers receive the highest standard of service. If you are unhappy with the service you have received or the vehicle you have purchased, we want to hear about it so that we can put things right. We take all complaints very seriously and view them as an opportunity to improve our business.
           </p>
           
           <h2 className="text-xl tracking-widest uppercase font-semibold text-white mt-12 mb-6">How to make a complaint</h2>

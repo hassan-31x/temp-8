@@ -198,7 +198,7 @@ const Home = async () => {
           <p className="text-base text-gray-300 font-medium mb-6">
             Browse our selection of hand-picked prestige and performance cars
           </p>
-          <Link href="/showroom" className="inline-flex items-center text-sm font-bold tracking-widest hover:text-red-500 transition-colors uppercase gap-2">
+          <Link href="/used-cars" className="inline-flex items-center text-sm font-bold tracking-widest hover:text-red-500 transition-colors uppercase gap-2">
             BROWSE SHOWROOM <ChevronRight className="h-4 w-4 text-red-500" />
           </Link>
         </AnimatedCard>

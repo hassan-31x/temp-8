@@ -29,12 +29,12 @@ const queryVacanciesPage = cache(async (): Promise<Page | null> => {
 })
 
 export const metadata: Metadata = {
-  title: 'Career Opportunities - MWA Autos | Join Our Team in Nottingham',
-  description: 'Join the MWA Autos team! Explore current job vacancies at our family-run used car dealership in Nottingham. We offer competitive salaries and excellent career development opportunities.',
-  keywords: 'jobs Nottingham, car sales jobs, automotive careers, MWA Autos careers, sales executive jobs, mechanic jobs Nottingham',
+  title: 'Career Opportunities - MYDV Autos | Join Our Team in Nottingham',
+  description: 'Join the MYDV Autos team! Explore current job vacancies at our family-run used car dealership in Nottingham. We offer competitive salaries and excellent career development opportunities.',
+  keywords: 'jobs Nottingham, car sales jobs, automotive careers, MYDV Autos careers, sales executive jobs, mechanic jobs Nottingham',
   openGraph: {
-    title: 'Career Opportunities - MWA Autos',
-    description: 'Join our growing team at MWA Autos - exciting career opportunities in automotive sales and service.',
+    title: 'Career Opportunities - MYDV Autos',
+    description: 'Join our growing team at MYDV Autos - exciting career opportunities in automotive sales and service.',
     type: 'website',
     locale: 'en_GB',
   },

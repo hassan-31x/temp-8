@@ -303,7 +303,7 @@ export default function ReservationSuccessPage() {
                   <CustomButton
                     variant="outline"
                     className="w-full"
-                    onClick={() => window.open('mailto:info@mwaautosltd.co.uk')}
+                    onClick={() => window.open('mailto:info@mydv.co.uk')}
                   >
                     <Mail className="w-4 h-4 mr-2" />
                     Email Us

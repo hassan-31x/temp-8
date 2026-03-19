@@ -84,7 +84,7 @@ export default function CookiesPage() {
             <p>
               Some of our pages include content from third-party services (such as YouTube videos or social media widgets).
               These services may set their own cookies. We do not control these cookies — please refer to the third
-              party&apos;s own privacy and cookie policies.
+              party’s own privacy and cookie policies.
             </p>
           </section>
 
